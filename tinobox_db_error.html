@@ -1,0 +1,22 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TINOBOX_DB_ERROR</title>
+        <script>
+            const TINOBOX_DB_ERROR_CODES = [
+                {
+                    code: -1,
+                    text: "Something went wrong"
+                }
+            ]
+            document.addEventListener("DOMContentLoaded", (_)=>{
+                document.getElementById("error").innerText = "Unhandled error, please contact dev"
+            })
+        </script>
+    </head>
+    <body>
+        <h1>TINOBOX_DB_ERROR</h1>
+        <p id="error">...</p>
+    </body>
+</html>
