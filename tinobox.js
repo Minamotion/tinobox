@@ -1,3 +1,6 @@
+/**
+ * Indexed Database helpers
+ */
 class TinoBoxDB {
     /**
      * Tinobox database
@@ -46,8 +49,10 @@ class TinoBoxDB {
         return this.db.transaction("data").objectStore("data").get(name)
     }
 }
+/**
+ * Fun TinoBox functions
+ */
 class TinoBox {
-	database
 	constructor() {
 		console.log("TinoBox has been instantiated")
 	}
@@ -60,4 +65,5 @@ class TinoBox {
 }
 
 const tinobox = new TinoBox()
-export { tinobox }
+const tinobox_db = new TinoBoxDB()
+export { tinobox, tinobox_db }
