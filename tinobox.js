@@ -1,4 +1,22 @@
-class CoolMath {
+class TinoBox {
+  constructor() {
+    console.log("TinoBox has been instantiated")
+  }
+  class TinoBoxDB {
+    constructor() {
+      let req = indexedDB.open("TINOBOX_DB//"+location.hostname.toUpperCase(), 1)
+      req.onerror = (_) => {
+        open(`https://tinobox.minamotion.name/TINOBOX_DB_ERROR/?errname=${req.error.name}&errmsg=${req.error.message}`)
+      }
+      req.onsuccess = (_) => {
+        console.log("Opened tinobox database successfully")
+        this.db = req.result
+      }
+    }
+    create(name, options) {
+      return this.db.createObjectStore(name, options)
+    }
+  }
   wave(x= Math.PI) {
     return (Math.cos(x) +1) /2
   }
@@ -6,6 +24,6 @@ class CoolMath {
     return Math.floor(Math.random() *max) +min
   }
 }
-const coolmath= new CoolMath()
-console.log("TinoBox was imported in a script!")
-export {coolmath}
+
+const tinobox = new TinoBox()
+export {tinobox}
