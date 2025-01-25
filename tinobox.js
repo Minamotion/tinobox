@@ -1,8 +1,3 @@
-class LocalSave {
-  constructor() {
-    console.error("Coming soon")
-  }
-}
 class CoolMath {
   wave(x= Math.PI) {
     return (Math.cos(x) +1) /2
