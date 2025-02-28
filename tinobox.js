@@ -56,8 +56,11 @@ class TinoBox {
 	constructor() {
 		console.log("TinoBox has been instantiated")
 	}
-	wave(x = Math.PI) {
-		return (Math.cos(x) + 1) / 2
+	wave(x) {
+		return (Math.cos(x*Math.PI) + 1) / 2
+	}
+	bounce(x) {
+		return Math.abs(Math.sin(x*Math.PI))
 	}
 	randomInt(min = 0, max = 10) {
 		return Math.floor(Math.random() * max) + min
