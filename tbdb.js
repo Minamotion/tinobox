@@ -1,21 +1,26 @@
 /**
- * Indexed Database helpers
+ * TinoBoxDB
+ * A short way for writing stuff like "db.transaction("data", "readwrite").objectStore("data").put({dataname: name, datacontent: content})" or ""
  */
-class TinoBoxDB {
+export class TinoBoxDB {
     /**
-     * Tinobox database
+     * Actual IDBDatabase
      * @type {IDBDatabase}
      */
     db
-    constructor() {
-        const request = window.indexedDB.open("tinobox_db", 3);
+    /**
+     * Creates a database you can write to
+     * @param {string} name Name of the database, it must be unique
+     */
+    constructor(name) {
+        const request = window.indexedDB.open(`TBDB:${name}`, 3);
         request.onerror = (_) => {
-            open(`https://tinobox.minamotion.name/tinobox_db_error.html/?errname=${request.error.name}&errmsg=${request.error.message}`)
+		console.error("Oh noes! Something went wrong!\nDetails:", request.error)
         }
         request.onsuccess = (_) => {
             this.db = request.result
             this.db.onerror = (event) => {
-                open(`https://tinobox.minamotion.name/tinobox_db_error.html/?errname=${event.target.error.name}&errmsg=${event.target.error.message}`)
+                console.error("Oh noes! Something went wrong!\nDetails:", event.target.error)
             }
         }
         request.onupgradeneeded = (_) => {
@@ -29,7 +34,7 @@ class TinoBoxDB {
      * @param {*} content Contents of item
      * @returns {IDBRequest} Request
      */
-    writeData(name, content) {
+    write(name, content) {
         return this.db.transaction("data", "readwrite").objectStore("data").put({dataname: name, datacontent: content})
     }
     /**
@@ -37,7 +42,7 @@ class TinoBoxDB {
      * @param {string} name Name of item (item must exist)
      * @returns {IDBRequest} Request
      */
-    deleteData(name) {
+    delete(name) {
         return this.db.transaction("data", "readwrite").objectStore("data").delete(name)
     }
     /**
@@ -45,28 +50,7 @@ class TinoBoxDB {
      * @param {string} name Name of item (item must exist)
      * @returns {IDBRequest} Request
      */
-    readData(name) {
+    read(name) {
         return this.db.transaction("data").objectStore("data").get(name)
     }
 }
-/**
- * Fun TinoBox functions
- */
-class TinoBox {
-	constructor() {
-		console.log("TinoBox has been instantiated")
-	}
-	wave(x) {
-		return (Math.cos(x*Math.PI) + 1) / 2
-	}
-	bounce(x) {
-		return Math.abs(Math.sin(x*Math.PI))
-	}
-	randomInt(min = 0, max = 10) {
-		return Math.floor(Math.random() * max) + min
-	}
-}
-
-const tinobox = new TinoBox()
-const tinobox_db = new TinoBoxDB()
-export { tinobox, tinobox_db }
