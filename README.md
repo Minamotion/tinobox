@@ -20,7 +20,7 @@ tbdb.write("foo", {isFoo: true})
 ## How do I include it in my javascript code?
 Simple, just copy paste this into the top of your js file
 ```javascript
-import { TinoboxDB } from "https://cdn.jsdelivr.com/gh/Minamotion/tinobox/tbdb.js"
+import { TinoboxDB } from "https://cdn.jsdelivr.net/gh/Minamotion/tinobox/tbdb.js"
 ```
 And now you can create as many databases as you want
 ```javascript
