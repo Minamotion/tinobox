@@ -1,8 +1,7 @@
 /**
- * TinoBoxDB
- * A short way for writing stuff like "db.transaction("data", "readwrite").objectStore("data").put({dataname: name, datacontent: content})" or ""
+ * TinoboxDB
  */
-export class TinoBoxDB {
+export class TinoboxDB {
     /**
      * Actual IDBDatabase
      * @type {IDBDatabase}
@@ -13,7 +12,7 @@ export class TinoBoxDB {
      * @param {string} name Name of the database, it must be unique
      */
     constructor(name) {
-        const request = window.indexedDB.open(`TBDB:${name}`, 3);
+        const request = window.indexedDB.open(`TBDB:${name}`, 1);
         request.onerror = (_) => {
 		console.error("Oh noes! Something went wrong!\nDetails:", request.error)
         }
