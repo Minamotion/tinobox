@@ -1,7 +1,7 @@
 /**
  * TinoboxDB
  */
-export class TinoboxDB {
+export default class TinoboxDB {
     /**
      * Actual IDBDatabase
      * @type {IDBDatabase}
@@ -14,7 +14,7 @@ export class TinoboxDB {
     constructor(name) {
         const request = window.indexedDB.open(`TBDB:${name}`, 1);
         request.onerror = (_) => {
-		console.error("Oh noes! Something went wrong!\nDetails:", request.error)
+		    console.error("Oh noes! Something went wrong!\nDetails:", request.error)
         }
         request.onsuccess = (_) => {
             this.db = request.result
@@ -31,7 +31,7 @@ export class TinoboxDB {
      * Requests the database to create/modify an item
      * @param {string} name Name of item
      * @param {*} content Contents of item
-     * @returns {IDBRequest} Request
+     * @returns {IDBRequest<IDBValidKey} Request
      */
     write(name, content) {
         return this.db.transaction("data", "readwrite").objectStore("data").put({dataname: name, datacontent: content})
@@ -39,7 +39,7 @@ export class TinoboxDB {
     /**
      * Requests the database to delete an item
      * @param {string} name Name of item (item must exist)
-     * @returns {IDBRequest} Request
+     * @returns {IDBRequest<undefined>} Request
      */
     delete(name) {
         return this.db.transaction("data", "readwrite").objectStore("data").delete(name)
@@ -47,7 +47,7 @@ export class TinoboxDB {
     /**
      * Requests the database to read an item
      * @param {string} name Name of item (item must exist)
-     * @returns {IDBRequest} Request
+     * @returns {IDBRequest<any>} Request
      */
     read(name) {
         return this.db.transaction("data").objectStore("data").get(name)

@@ -3,33 +3,50 @@ A short way for writing local IDBDatabase code
 ## What does it make me do better?
 Instead of writing long spaguetti code
 ```javascript
-let db;
-const request = window.indexedDB.open(`my-awesome-database`, 1);
-request.onsuccess = (_) => {db = request.result}
-request.onupgradeneeded = (_) => {
-    const data = this.db.createObjectStore("data", { keyPath: "dataname" })
-    data.createIndex("datacontent", "datacontent", {unique: false})
+// OH NO!!! HARD CODE!!! D:
+const request = indexedDB.open("my-awesome-database");
+request.onerror = (event) => {
+    console.error("Oh noes! Something went wrong!\nDetails:", event.target.error)
+};
+request.onsuccess = (event) => {
+    const db = event.target.result;
+    db.onerror = (event) => {
+        console.error("Oh noes! Something went wrong!\nDetails:", event.target.error)
+    }
+};
+request.onupgradeneeded = (event) => {
+	const db = event.target.result
+    const data = db.createObjectStore("data", { keyPath: "dataname" })
+    data.createIndex("datacontent", "datacontent", { unique: false })
 }
-db.transaction("data", "readwrite").objectStore("data").put({dataname: "foo", datacontent: {isFoo: true}})
+
+request.result.transaction("data", "readwrite").objectStore("data").put({dataname: "foo", datacontent: {isFoo: true}})
+request.result.transaction("data", "readwrite").objectStore("data").put({dataname: "bar", datacontent: {isFoo: false}})
 ```
 You can write this
 ```javascript
-const tbdb = TinoboxDB("my-awesome-database")
-tbdb.write("foo", {isFoo: true})
+// YAY!!! EASY CODE!!! :D
+const myAwesomeDatabase = TinoboxDB("my-awesome-database")
+myAwesomeDatabase.write("foo", {isFoo: true})
+myAwesomeDatabase.write("bar", {isFoo: false})
 ```
 ## How do I include it in my javascript code?
 Simple, just copy paste this into the top of your js file
 ```javascript
-import { TinoboxDB } from "https://cdn.jsdelivr.net/gh/Minamotion/tinobox/tbdb.js"
+import TinoboxDB from "https://cdn.jsdelivr.net/gh/Minamotion/tinobox/tbdb.js"
 ```
 And now you can create as many databases as you want
 ```javascript
-// This is just a quick example
-const a = TinoboxDB("a")
+// This is just an example
+import TinoboxDB from "https://cdn.jsdelivr.net/gh/Minamotion/tinobox/tbdb.js";
+
+const a = new TinoboxDB("a")
 a.write("foo", {isFoo: true})
 
-const b = TinoboxDB("b")
-b.write("bar", {isFoo: false})
+const b = new TinoboxDB("b")
+a.write("foo", "foo")
+
+console.log("a.foo = ",a.read("foo"),"\nb.foo = ",b.read("foo"))
 ```
 ## Why is it just one file (excluding the README.md)
-You don't need that much crap to make something work
+You don't need that much crap to make something work, do you?
